@@ -6,6 +6,7 @@ const Config = () => import('@/views/config')
 const Layout = () => import('@/views/layout')
 const Welcome = () => import('@/views/welcome')
 const User = () => import('@/views/user')
+const Profile = () => import('@/views/profile')
 
 Vue.use(VueRouter)
 
@@ -14,8 +15,6 @@ const originalPush = VueRouter.prototype.push
 VueRouter.prototype.push = function push(location) {
   return originalPush.call(this, location).catch(err => err)
 }
-
-let role = 'admin';
 
 let routes = [
   {
@@ -46,13 +45,19 @@ let routes = [
         component: User,
         name: 'User',
         meta: { title: 'User', icon: 'user', affix: false },
-        // children: [{
-        //   path: '/user/userList',
-        //   component: Config,
-        //   name: 'UserList',
-        //   meta: { title: 'UserList', icon: 'setting', affix: false }
-        // }]
-      }
+      },
+      {
+        path: '/config',
+        component: Config,
+        name: 'Config',
+        meta: { title: 'Config', icon: 'setting', role: 'admin', affix: false }
+      },
+      {
+        path: '/profile',
+        component: Profile,
+        name: 'Profile',
+        meta: { title: 'Profile', icon: 'setting', affix: false }
+      },
     ]
   },
   {
@@ -69,12 +74,7 @@ let routes = [
 
 // 动态路由权限
 let dynamicRoutes = [
-  {
-    path: '/config',
-    component: Config,
-    name: 'Config',
-    meta: { title: 'Config', icon: 'setting', role: 'admin', affix: false }
-  },
+
 ]
 
 let menuList = []
@@ -97,7 +97,24 @@ const hanleFor = function (list) {
   }
 }
 
-export default new VueRouter({
+
+const routers = new VueRouter({
   routes,
   mode: 'history'
 })
+
+routers.beforeEach((to, from, next) => {
+  console.log('to', to)
+  if (to.path == undefined) return next({ name: 'Login' })
+  if (to.path == '/' || to.path == '/login') return next();
+  else {
+    const token = window.sessionStorage.getItem("token")
+    if (token == null || token == undefined) {
+      return next({ name: 'Login' })
+    } else {
+      next()
+    }
+  }
+})
+
+export default routers;

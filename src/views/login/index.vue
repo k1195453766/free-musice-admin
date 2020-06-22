@@ -19,7 +19,7 @@
         <el-input
           ref="username"
           v-model="loginForm.username"
-          placeholder="Username"
+          placeholder="请输入用户名"
           name="username"
           type="text"
           tabindex="1"
@@ -37,7 +37,7 @@
             ref="password"
             v-model="loginForm.password"
             :type="passwordType"
-            placeholder="Password"
+            placeholder="请输入密码"
             name="password"
             tabindex="2"
             autocomplete="on"
@@ -70,22 +70,22 @@ export default {
   data() {
     const validateUsername = (rule, value, callback) => {
       if (!validUsername(value)) {
-        callback(new Error("Please enter the correct user name"));
+        callback(new Error("请输入用户名"));
       } else {
         callback();
       }
     };
     const validatePassword = (rule, value, callback) => {
       if (value.length < 6) {
-        callback(new Error("The password can not be less than 6 digits"));
+        callback(new Error("请输入至少6位数密码"));
       } else {
         callback();
       }
     };
     return {
       loginForm: {
-        username: "admin",
-        password: "111111"
+        username: "",
+        password: ""
       },
       loginRules: {
         username: [
@@ -129,20 +129,47 @@ export default {
     handleLogin() {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
-          //this.loading = true;
+          this.loading = true;
+          this.$http({
+            url: "/login",
+            method: "get",
+            params: this.loginForm
+          })
+            .then(res => {
+              if (res.status == 1) {
+                this.$store.commit("set_UserInfo", res.data);
+                this.$store.commit("SET_TOKEN", res.data.token);
+                window.sessionStorage.setItem("token", res.data.token);
+                window.sessionStorage.setItem("userInfo", [
+                  JSON.stringify(res.data)
+                ]);
+                this.$router.replace("/layout");
+                this.loading = false;
+              } else {
+                this.loading = false;
+                this.$message({
+                  message: res.msg,
+                  type: "warning"
+                });
+              }
+            })
+            .catch(e => {
+              this.loading = false;
+              console.log("error", e);
+              this.$message.error("请求报错,请稍后重试");
+            });
           // this.$store
-          //   .dispatch("user/login", this.loginForm)
-          //   .then(() => {
-          //     this.$router.push({
-          //       path: this.redirect || "/",
-          //       query: this.otherQuery
-          //     });
+          //   .dispatch("login", this.loginForm)
+          //   .then((res) => {
+          //     // this.$router.push({
+          //     //   path: this.redirect || "/",
+          //     //   query: this.otherQuery
+          //     // });
           //     this.loading = false;
           //   })
           //   .catch(() => {
           //     this.loading = false;
           //   });
-          this.$router.replace("Layout");
         } else {
           console.log("error submit!!");
           return false;

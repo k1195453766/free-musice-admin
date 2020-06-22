@@ -40,6 +40,11 @@
         <i class="el-icon-setting"></i>
         <span slot="title">系统设置</span>
       </el-menu-item>
+
+      <el-menu-item index="/profile">
+        <i class="el-icon-setting"></i>
+        <span slot="title">个人设置</span>
+      </el-menu-item>
     </el-menu>
   </div>
 </template>
@@ -62,7 +67,7 @@ export default {
   },
   computed: {
     getRoute() {
-      return this.$route.path;
+      return this.$route.path == "/layout" ? "/welcome" : this.$route.path;
     }
   },
   methods: {

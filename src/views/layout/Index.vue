@@ -8,7 +8,7 @@
 
       <el-container class="el-container">
         <el-header>
-          <nav-bar @updateCollapse="updateCollapse" />
+          <nav-bar @updateCollapse="updateCollapse" @handleCommand="handleCommand" />
           <!-- <i class="el-icon-s-fold" @click="updataCollapse()"></i> -->
         </el-header>
 
@@ -52,6 +52,27 @@ export default {
           "210px";
         this.width = "210px";
       }
+    },
+
+    handleCommand(params) {
+      console.log("handleCommand", params);
+      if (params.index == 0) {
+        // 退出
+        this.$store
+          .dispatch("loginOut")
+          .then(res => {
+            if (res.status == 1) {
+              window.sessionStorage.clear();
+              this.$router.replace("/");
+            }
+          })
+          .catch(e => {
+            console.log("loginOut Err");
+          });
+      } else if (params.index == 1) {
+        // 查看个人信息
+        this.$router.push("/config");
+      }
     }
   }
 };
@@ -77,8 +98,6 @@ export default {
 }
 .el-main {
   padding: 0;
-  margin-top: 60px;
-  z-index: -9;
 }
 body > .el-container {
   margin-bottom: 40px;
@@ -89,7 +108,10 @@ body > .el-container {
   text-align: center;
   line-height: 60px;
   padding: 0;
-  position: fixed;
   width: 100%;
+  z-index: 9;
+  right: 0px;
+  left: 0;
+  position: relative;
 }
 </style>
