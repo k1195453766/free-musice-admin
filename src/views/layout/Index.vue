@@ -13,7 +13,9 @@
         </el-header>
 
         <el-main>
-          <router-view />
+          <transition>
+            <router-view />
+          </transition>
         </el-main>
       </el-container>
     </el-container>
@@ -55,7 +57,6 @@ export default {
     },
 
     handleCommand(params) {
-      console.log("handleCommand", params);
       if (params.index == 0) {
         // 退出
         this.$store
@@ -64,14 +65,15 @@ export default {
             if (res.status == 1) {
               window.sessionStorage.clear();
               this.$router.replace("/");
+              location.reload();
             }
           })
           .catch(e => {
-            console.log("loginOut Err");
+            console.log("loginOut Error");
           });
       } else if (params.index == 1) {
         // 查看个人信息
-        this.$router.push("/config");
+        this.$router.push("/profile");
       }
     }
   }

@@ -6,6 +6,9 @@ import request from '../network/request'
 Vue.use(Vuex)
 
 const mutations = {
+    set_routes: (state, routes) => {
+        state.routes = routes
+    },
     SET_TOKEN: (state, token) => {
         state.token = token
     },
@@ -63,6 +66,7 @@ const store = new Vuex.Store({
         name: '',//用户名称
         roles: '',//用户角色
         avatar: '',//用户头像
+        routes: window.sessionStorage.getItem('routes'), //保存当前用户的所有路由
     },
     // 保存state信息
     mutations,

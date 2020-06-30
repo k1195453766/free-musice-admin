@@ -64,6 +64,7 @@
 
 <script>
 import { validUsername } from "@/utils/validate";
+import { checkPermission } from "@/utils/permission";
 
 export default {
   name: "Login",
@@ -137,6 +138,7 @@ export default {
           })
             .then(res => {
               if (res.status == 1) {
+                checkPermission(res.data.role);
                 this.$store.commit("set_UserInfo", res.data);
                 this.$store.commit("SET_TOKEN", res.data.token);
                 window.sessionStorage.setItem("token", res.data.token);
