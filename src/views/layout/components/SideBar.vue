@@ -20,24 +20,28 @@
       </el-menu-item>
 
       <template v-for="(item ,index) in routes">
-        <!-- 当前路由有子路由的 -->
-        <template v-if="item.children&&item.children.length>0">
-          <el-submenu :index="item.path" :key="index" :popper-class="item.meta.title">
-            <template slot="title">
+        <template v-if="!item.meta.hidden">
+          <!-- 当前路由有子路由的 -->
+          <template v-if="item.children&&item.children.length>0">
+            <el-submenu :index="item.path" :key="index" :popper-class="item.meta.title">
+              <template slot="title">
+                <i class="el-icon-user"></i>
+                <span>{{item.meta.title}}</span>
+              </template>
+              <el-menu-item-group v-for="(child ,key) in item.children" :key="key">
+                <template v-if="!child.meta.hidden">
+                  <el-menu-item v-if="child.meta.affix" :index="child.path">{{child.meta.title}}</el-menu-item>
+                </template>
+              </el-menu-item-group>
+            </el-submenu>
+          </template>
+          <!-- 当前路由没有子路由 -->
+          <template v-else>
+            <el-menu-item v-if="item.meta.affix" :key="index" :index="item.path">
               <i class="el-icon-user"></i>
-              <span>{{item.meta.title}}</span>
-            </template>
-            <el-menu-item-group v-for="(child ,key) in item.children" :key="key">
-              <el-menu-item v-if="child.meta.affix" :index="child.path">{{child.meta.title}}</el-menu-item>
-            </el-menu-item-group>
-          </el-submenu>
-        </template>
-        <!-- 当前路由没有子路由 -->
-        <template v-else>
-          <el-menu-item v-if="item.meta.affix" :key="index" :index="item.path">
-            <i class="el-icon-user"></i>
-            <span slot="title">{{item.meta.title}}</span>
-          </el-menu-item>
+              <span slot="title">{{item.meta.title}}</span>
+            </el-menu-item>
+          </template>
         </template>
       </template>
 
@@ -91,11 +95,15 @@ export default {
   },
   created() {
     console.log("当前路由", this.$route);
+    console.log(
+      "所有路由",
+      JSON.parse(window.sessionStorage.getItem("routes"))
+    );
   },
   computed: {
     getRoute() {
       return this.$route.path == "/layout" ? "/welcome" : this.$route.path;
-    },
+    }
   },
   methods: {
     handleOpen(key, keyPath) {

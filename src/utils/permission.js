@@ -9,6 +9,6 @@ import { setMenuTree } from '@/router'
 
 export function checkPermission(role) {
     console.log('checkPermission-role', role);
-    console.log('checkPermission-dynamicRoutes', setMenuTree(role));
-
+    //console.log('checkPermission-dynamicRoutes', setMenuTree(role));
+    setMenuTree(role)
 }
