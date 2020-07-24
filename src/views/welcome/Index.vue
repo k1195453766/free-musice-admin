@@ -2,20 +2,26 @@
 <template>
   <div>
     <h1>欢迎来到XXX后台管理系统</h1>
-    <button id="btn" @click="function a(){alert('12314')}" type="primary">主要按钮</button>
+    <h3>{{title}} --- {{content}}</h3>
+    <button id="btn" @click="clickOn()" type="primary">主要按钮</button>
   </div>
 </template>
 
 <script>
+import { mapState, mapGetters, mapMutations, mapActions } from "vuex";
 export default {
   name: "Index",
   data() {
     return {};
   },
+
   methods: {
     clickOn() {
-      alert("14124");
+      alert("点击了按钮");
     }
+  },
+  computed: {
+    ...mapState("userModule", ["title", "content"])
   }
 };
 </script>

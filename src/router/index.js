@@ -110,7 +110,7 @@ const routers = new VueRouter({
 })
 
 routers.beforeEach((to, from, next) => {
-  //console.log('to', to)
+  console.log('to', to)
 
   if (to.path == undefined) return next({ name: 'Login' })
   if (to.path == '/' || to.path == '/login') return next();

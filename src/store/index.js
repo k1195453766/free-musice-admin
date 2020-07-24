@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import userModule from './modules/userModule'
 
 import request from '../network/request'
 
@@ -56,7 +57,7 @@ const actions = {
 }
 
 const modules = {
-
+    userModule
 }
 
 const store = new Vuex.Store({

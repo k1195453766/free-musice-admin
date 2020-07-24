@@ -6,9 +6,13 @@
 * @LastEditors: Please set LastEditors
 */
 
-export const moduleUser = {
+export default {
+    namespaced: true,//这里是解决不同模块命名冲突的问题,但是所有数据都还在一个挂载点上
+
     state: {
         userList: [],
+        title: '这里是userModule',
+        content:'这里是content字段'
     },
     mutations: {
         set_user_list: (state, userList) => {
