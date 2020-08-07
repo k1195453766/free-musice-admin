@@ -32,13 +32,24 @@ const actions = {
     login({ commit }, userInfo) {
         const { username, password } = userInfo
         return new Promise((resolve, reject) => {
-            login({ username: username.trim(), password: password }).then(response => {
-                const { data } = response
-                commit('SET_TOKEN', data.token)
-                setToken(data.token)
-                resolve()
-            }).catch(error => {
-                reject(error)
+            // login({ username: username.trim(), password: password }).then(response => {
+            //     console.log('login-login', response);
+            //     const { data } = response
+            //     commit('SET_TOKEN', data.token)
+            //     setToken(data.token)
+            //     resolve()
+            // }).catch(error => {
+            //     reject(error)
+            // })
+            return request({
+                url: '/login?username=wangrenhai&password=888888',
+                method: 'get'
+            }).then(res => {
+                console.log('login-succ', res);
+                resolve(res)
+            }).catch(e => {
+                console.log('login-error', e);
+                reject(e)
             })
         })
     },

@@ -16,9 +16,15 @@
       </el-form-item>
       <el-form-item label="头像">
         <el-input v-model="form.avator" :disabled="true"></el-input>
-        <el-upload
+        <input
+          name="image"
+          type="file"
+          accept="image/png, image/gif, image/jpeg"
+          @change="submitForm"
+        />
+        <!-- <el-upload
           class="upload-demo"
-          action="http://www.freemusice.com/api/uploadImage"
+          action="http://sidama.sidama.work/api/uploadImage"
           :on-preview="handlePreview"
           :on-remove="handleRemove"
           :before-upload="beforeAvatarUpload"
@@ -31,7 +37,7 @@
         >
           <el-button size="small" type="primary">点击上传</el-button>
           <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
-        </el-upload>
+        </el-upload>-->
       </el-form-item>
 
       <el-form-item label="性别">
@@ -71,39 +77,51 @@ export default {
         avator: userInfo.avator,
         role: userInfo.role,
         sex: userInfo.sex == 1 ? "男" : "女",
-        password: userInfo.password
+        password: userInfo.password,
       },
       rules: {
         name: [{ required: true, message: "请输入名称", trigger: "blur" }],
         phone: [{ required: true, message: "请输入电话", trigger: "blur" }],
         avator: [{ required: true, message: "请输入头像", trigger: "blur" }],
-        sex: [{ required: true, message: "请选择您的性别", trigger: "blur" }]
+        sex: [{ required: true, message: "请选择您的性别", trigger: "blur" }],
       },
-      fileList: []
+      fileList: [],
     };
   },
   computed: {
     getUserInfo() {
       return JSON.parse(window.sessionStorage.getItem("userInfo"));
-    }
+    },
   },
   methods: {
     submitForm(formName) {
-      this.$refs[formName].validate(valid => {
+      let file = formName.target.files[0];
+      console.log(file);
+      /* eslint-disable no-undef */
+      let param = new FormData(); // 创建form对象
+      param.append("image", file); // 通过append向form对象添加数据
+      param.append("userInfo", this.userInfo); // 添加form表单中其他数据
+      param.append("params", this.form); // 添加form表单中其他数据
+      //console.log(param.get("file")); // FormData私有类对象，访问不到，可以通过get判断值是否传进去
+
+      this.$http({
+        url: "/api/uploadImage",
+        method: "post",
+        data: param,
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      })
+        .then((res) => {
+          console.log("uploadImageSucc", res);
+        })
+        .catch((e) => {
+          console.log("uploadImageError", e);
+        });
+      return;
+      this.$refs[formName].validate((valid) => {
         if (valid) {
           //   alert("submit!");
-
-          this.$http({
-            url: "/api/uploadImage",
-            method: "post",
-            data: this.userInfo
-          })
-            .then(res => {
-              console.log("uploadImageSucc", res);
-            })
-            .catch(e => {
-              console.log("uploadImageError", e);
-            });
         } else {
           console.log("error submit!!");
           return false;
@@ -137,8 +155,8 @@ export default {
       console.log(this.fileList);
 
       return isJPG && isLt2M;
-    }
-  }
+    },
+  },
 };
 </script>
 

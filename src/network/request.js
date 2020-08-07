@@ -3,15 +3,14 @@ import axios from 'axios'
 
 export default function request(config) {
     const instance = axios.create({
-        baseURL: 'http://www.musicefree.com',
+        baseURL: 'http://sidama.sidama.work',
         //baseURL: 'http://localhost',
         timeout: 5000,
         withCredentials: true,//是否允许发送Cookie 如果为true 则服务器的 Access-control-Allow-Credentials 必须为 true 来源为 XMLHttpRequest的withCredentials配置项
         proxy: {
-            host: 'http://www.musicefree.com',
+            host: 'http://sidama.sidama.work',
             port: 80
         },
-
     })
 
     // 请求拦截

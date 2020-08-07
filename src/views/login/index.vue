@@ -86,22 +86,22 @@ export default {
     return {
       loginForm: {
         username: "",
-        password: ""
+        password: "",
       },
       loginRules: {
         username: [
-          { required: true, trigger: "blur", validator: validateUsername }
+          { required: true, trigger: "blur", validator: validateUsername },
         ],
         password: [
-          { required: true, trigger: "blur", validator: validatePassword }
-        ]
+          { required: true, trigger: "blur", validator: validatePassword },
+        ],
       },
       passwordType: "password",
       capsTooltip: false,
       loading: false,
       showDialog: false,
       redirect: undefined,
-      otherQuery: {}
+      otherQuery: {},
     };
   },
 
@@ -128,22 +128,22 @@ export default {
       });
     },
     handleLogin() {
-      this.$refs.loginForm.validate(valid => {
+      this.$refs.loginForm.validate((valid) => {
         if (valid) {
           this.loading = true;
           this.$http({
             url: "/login",
             method: "get",
-            params: this.loginForm
+            params: this.loginForm,
           })
-            .then(res => {
+            .then((res) => {
               if (res.status == 1) {
                 checkPermission(res.data.role);
                 this.$store.commit("set_UserInfo", res.data);
                 this.$store.commit("SET_TOKEN", res.data.token);
                 window.sessionStorage.setItem("token", res.data.token);
                 window.sessionStorage.setItem("userInfo", [
-                  JSON.stringify(res.data)
+                  JSON.stringify(res.data),
                 ]);
                 this.$router.replace("/layout");
                 this.loading = false;
@@ -151,11 +151,11 @@ export default {
                 this.loading = false;
                 this.$message({
                   message: res.msg,
-                  type: "warning"
+                  type: "warning",
                 });
               }
             })
-            .catch(e => {
+            .catch((e) => {
               this.loading = false;
               console.log("error", e);
               this.$message.error("请求报错,请稍后重试");
@@ -163,11 +163,24 @@ export default {
           // this.$store
           //   .dispatch("login", this.loginForm)
           //   .then((res) => {
-          //     // this.$router.push({
-          //     //   path: this.redirect || "/",
-          //     //   query: this.otherQuery
-          //     // });
-          //     this.loading = false;
+          //     console.log("login", res);
+          //     if (res.status == 1) {
+          //       checkPermission(res.data.role);
+          //       this.$store.commit("set_UserInfo", res.data);
+          //       this.$store.commit("SET_TOKEN", res.data.token);
+          //       window.sessionStorage.setItem("token", res.data.token);
+          //       window.sessionStorage.setItem("userInfo", [
+          //         JSON.stringify(res.data),
+          //       ]);
+          //       this.$router.replace("/layout");
+          //       this.loading = false;
+          //     } else {
+          //       this.loading = false;
+          //       this.$message({
+          //         message: res.msg,
+          //         type: "warning",
+          //       });
+          //     }
           //   })
           //   .catch(() => {
           //     this.loading = false;
@@ -185,8 +198,8 @@ export default {
         }
         return acc;
       }, {});
-    }
-  }
+    },
+  },
 };
 </script>
 
