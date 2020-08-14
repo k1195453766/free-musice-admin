@@ -45,7 +45,7 @@
         </template>
       </template>
 
-      <!-- <el-menu-item index="/welcome">
+      <!--  <el-menu-item index="/welcome">
         <i class="el-icon-menu"></i>
         <span slot="title">Welcome</span>
       </el-menu-item>
@@ -87,11 +87,11 @@ export default {
       title: "后台管理系统",
       logo:
         "https://wpimg.wallstcn.com/69a1c46c-eb1c-4b46-8bd4-e9e686ef5251.png",
-      routes: JSON.parse(window.sessionStorage.getItem("routes"))
+      routes: JSON.parse(window.sessionStorage.getItem("routes")),
     };
   },
   props: {
-    isCollapse: Boolean
+    isCollapse: Boolean,
   },
   created() {
     console.log("当前路由", this.$route);
@@ -103,7 +103,7 @@ export default {
   computed: {
     getRoute() {
       return this.$route.path == "/layout" ? "/welcome" : this.$route.path;
-    }
+    },
   },
   methods: {
     handleOpen(key, keyPath) {
@@ -111,8 +111,8 @@ export default {
     },
     handleClose(key, keyPath) {
       console.log(key, keyPath);
-    }
-  }
+    },
+  },
 };
 </script>
 

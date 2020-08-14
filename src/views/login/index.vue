@@ -65,6 +65,7 @@
 <script>
 import { validUsername } from "@/utils/validate";
 import { checkPermission } from "@/utils/permission";
+import { getToken, loginIn } from "@/utils/server";
 
 export default {
   name: "Login",
@@ -128,23 +129,41 @@ export default {
       });
     },
     handleLogin() {
+      loginIn(this.loginForm, (res) => {
+        console.log("loginIn", res);
+        if (res.status == 1) {
+          checkPermission(res.data.role);
+          this.$store.commit("set_UserInfo", res.data);
+          this.$store.commit("SET_TOKEN", res.data.token);
+          sessionStorage.setItem("token", res.data.token);
+          sessionStorage.setItem("userInfo", [JSON.stringify(res.data)]);
+          this.$router.replace("/layout");
+          this.loading = false;
+        } else {
+          this.loading = false;
+          this.$message({
+            message: res.msg,
+            type: "warning",
+          });
+        }
+      });
+      return;
+
       this.$refs.loginForm.validate((valid) => {
         if (valid) {
           this.loading = true;
           this.$http({
             url: "/login",
             method: "get",
-            params: this.loginForm,
+            data: this.loginForm,
           })
             .then((res) => {
               if (res.status == 1) {
                 checkPermission(res.data.role);
                 this.$store.commit("set_UserInfo", res.data);
                 this.$store.commit("SET_TOKEN", res.data.token);
-                window.sessionStorage.setItem("token", res.data.token);
-                window.sessionStorage.setItem("userInfo", [
-                  JSON.stringify(res.data),
-                ]);
+                sessionStorage.setItem("token", res.data.token);
+                sessionStorage.setItem("userInfo", [JSON.stringify(res.data)]);
                 this.$router.replace("/layout");
                 this.loading = false;
               } else {
@@ -160,31 +179,6 @@ export default {
               console.log("error", e);
               this.$message.error("请求报错,请稍后重试");
             });
-          // this.$store
-          //   .dispatch("login", this.loginForm)
-          //   .then((res) => {
-          //     console.log("login", res);
-          //     if (res.status == 1) {
-          //       checkPermission(res.data.role);
-          //       this.$store.commit("set_UserInfo", res.data);
-          //       this.$store.commit("SET_TOKEN", res.data.token);
-          //       window.sessionStorage.setItem("token", res.data.token);
-          //       window.sessionStorage.setItem("userInfo", [
-          //         JSON.stringify(res.data),
-          //       ]);
-          //       this.$router.replace("/layout");
-          //       this.loading = false;
-          //     } else {
-          //       this.loading = false;
-          //       this.$message({
-          //         message: res.msg,
-          //         type: "warning",
-          //       });
-          //     }
-          //   })
-          //   .catch(() => {
-          //     this.loading = false;
-          //   });
         } else {
           console.log("error submit!!");
           return false;

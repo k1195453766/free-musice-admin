@@ -47,13 +47,13 @@ let routes = [
         path: '/user',
         component: User,
         name: 'User',
-        meta: { title: '用户管理', icon: 'user', roles: ['admin'], affix: true, hidden: false },
+        meta: { title: '用户管理', icon: 'user', roles: ['admin', 'user'], affix: true, hidden: false },
         children: [
           {
             path: '/user',
             component: User,
             name: 'User',
-            meta: { title: '用户列表1', icon: 'user', roles: ['admin'], affix: true, hidden: false },
+            meta: { title: '用户列表1', icon: 'user', roles: ['admin', 'user'], affix: true, hidden: false },
           },
         ]
       },

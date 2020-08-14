@@ -54,6 +54,7 @@
 
 <script>
 import addDiaLog from "./components/add";
+import { userList } from "@/utils/server";
 export default {
   name: "User",
   data() {
@@ -64,11 +65,11 @@ export default {
       tableData: [],
       dialogVisible: false, //控制dialog是否显示
       dialogData: {}, //编辑时展示的数据
-      currRow: [] //选中的当前行
+      currRow: [], //选中的当前行
     };
   },
   components: {
-    addDiaLog
+    addDiaLog,
   },
   mounted() {
     this.getUserList();
@@ -89,13 +90,13 @@ export default {
       this.$http({
         url: "/api/addUser",
         method: "get",
-        params: data
+        params: data,
       })
-        .then(res => {
+        .then((res) => {
           if (res.status == 1) {
             this.$message({
               message: "新增成功",
-              icon: "success"
+              icon: "success",
             });
             this.getUserList();
             this.dialogVisible = false;
@@ -103,7 +104,7 @@ export default {
             this.$message(res.msg);
           }
         })
-        .catch(e => {
+        .catch((e) => {
           console.log("addUserError", e);
         });
     },
@@ -117,7 +118,7 @@ export default {
       this.$confirm("确定要删除该用户吗？", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
-        type: "warning"
+        type: "warning",
       })
         .then(() => {
           this.deleteUser(row.id);
@@ -130,7 +131,7 @@ export default {
       if (this.currRow.length == 0) {
         this.$message({
           message: "请选择要删除项",
-          type: "warning"
+          type: "warning",
         });
         return;
       }
@@ -140,9 +141,9 @@ export default {
       this.$http({
         url: "/api/deleteUser",
         method: "get",
-        params: { userids: ids }
+        params: { userids: ids },
       })
-        .then(res => {
+        .then((res) => {
           if (res.status == 1) {
             this.$message("删除成功");
             this.getUserList();
@@ -150,7 +151,7 @@ export default {
             this.$message(res.msg);
           }
         })
-        .catch(e => {
+        .catch((e) => {
           console.log("deleteUserError", e);
         });
     },
@@ -176,31 +177,39 @@ export default {
      * @return {}
      */
     getUserList() {
-      this.$http({
-        url: "/api/userList",
-        method: "get",
-        params: { page: this.page, size: this.size }
-      })
-        .then(res => {
-          if (res.status == 1) {
-            this.tableData = res.data.list;
-            this.pagesize = res.data.totle;
-          } else {
-            this.$message(res.msg);
-          }
-        })
-        .catch(e => {
-          console.log("getUserListError", e);
-        });
+      userList(this.page, this.size, (res) => {
+        if (res.status == 1) {
+          this.tableData = res.data.list;
+          this.pagesize = res.data.totle;
+        } else {
+          this.$message(res.msg);
+        }
+      });
+      // this.$http({
+      //   url: "/api/userList",
+      //   method: "get",
+      //   params: { page: this.page, size: this.size },
+      // })
+      //   .then((res) => {
+      //     if (res.status == 1) {
+      //       this.tableData = res.data.list;
+      //       this.pagesize = res.data.totle;
+      //     } else {
+      //       this.$message(res.msg);
+      //     }
+      //   })
+      //   .catch((e) => {
+      //     console.log("getUserListError", e);
+      //   });
     },
     // 删除用户
     deleteUser(id) {
       this.$http({
         url: "/api/deleteUser",
         method: "get",
-        params: { userids: id }
+        params: { userids: id },
       })
-        .then(res => {
+        .then((res) => {
           if (res.status == 1) {
             this.$message("删除成功");
             this.getUserList();
@@ -208,11 +217,11 @@ export default {
             this.$message(res.msg);
           }
         })
-        .catch(e => {
+        .catch((e) => {
           console.log("deleteUserError", e);
         });
-    }
-  }
+    },
+  },
 };
 </script>
 
