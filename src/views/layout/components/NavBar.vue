@@ -1,7 +1,10 @@
 <!--  -->
 <template>
   <div>
-    <i class="el-icon-s-fold" @click="onCollapse()"></i>
+    <!-- pc -->
+    <i class="el-icon-s-fold hidden-xs-only" @click="onCollapse()"></i>
+    <!-- phone -->
+    <i class="el-icon-menu hidden-sm-and-up" @click="onCollapsePhone()"></i>
 
     <div class="profile">
       <div class="block">
@@ -28,7 +31,7 @@ export default {
   data() {
     return {
       circleUrl:
-        "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"
+        "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png",
     };
   },
   computed: {
@@ -37,18 +40,22 @@ export default {
       return JSON.parse(window.sessionStorage.getItem("userInfo")).username;
     },
     // 获取头像
-    getAvatar() {}
+    getAvatar() {},
   },
   methods: {
     // 左上角收缩菜单
     onCollapse() {
       this.$emit("updateCollapse");
     },
+    // 手机端点击左上角菜单按钮
+    onCollapsePhone() {
+      this.$emit("updateCollapsePhone");
+    },
     // 我的操作
     handleCommand(command) {
       this.$emit("handleCommand", { index: command });
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -74,6 +81,13 @@ export default {
   height: 60px;
 }
 .el-header .el-icon-s-fold {
+  font-size: 30px;
+  line-height: 60px;
+  position: absolute;
+  left: 10px;
+}
+
+.el-header .el-icon-menu {
   font-size: 30px;
   line-height: 60px;
   position: absolute;

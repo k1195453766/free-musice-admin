@@ -1,10 +1,72 @@
 <template>
   <div class="login-container">
+    <!-- pc -->
     <el-form
       ref="loginForm"
       :model="loginForm"
       :rules="loginRules"
-      class="login-form"
+      class="login-form hidden-xs-only"
+      autocomplete="on"
+      label-position="left"
+    >
+      <div class="title-container">
+        <h3 class="title">登 录</h3>
+      </div>
+
+      <el-form-item prop="username">
+        <span class="svg-container">
+          <i class="el-icon-user"></i>
+        </span>
+        <el-input
+          ref="username"
+          v-model="loginForm.username"
+          placeholder="请输入用户名"
+          name="username"
+          type="text"
+          tabindex="1"
+          autocomplete="on"
+        />
+      </el-form-item>
+
+      <el-tooltip v-model="capsTooltip" content="Caps lock is On" placement="right" manual>
+        <el-form-item prop="password">
+          <span class="svg-container">
+            <i class="el-icon-key"></i>
+          </span>
+          <el-input
+            :key="passwordType"
+            ref="password"
+            v-model="loginForm.password"
+            :type="passwordType"
+            placeholder="请输入密码"
+            name="password"
+            tabindex="2"
+            autocomplete="on"
+            @keyup.native="checkCapslock"
+            @blur="capsTooltip = false"
+            @keyup.enter.native="handleLogin"
+          />
+          <span class="show-pwd" @click="showPwd">
+            <!-- <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" /> -->
+            <i :class="passwordType === 'password' ? 'el-icon-lock' : 'el-icon-unlock'"></i>
+          </span>
+        </el-form-item>
+      </el-tooltip>
+
+      <el-button
+        :loading="loading"
+        type="primary"
+        style="width:100%;margin-bottom:30px;"
+        @click.native.prevent="handleLogin"
+      >登 录</el-button>
+    </el-form>
+
+    <!-- 手机端 -->
+    <el-form
+      ref="loginForm"
+      :model="loginForm"
+      :rules="loginRules"
+      class="login-form-phone hidden-sm-and-up"
       autocomplete="on"
       label-position="left"
     >
@@ -216,7 +278,7 @@ $cursor: #fff;
   .el-input {
     display: inline-block;
     height: 47px;
-    width: 85%;
+    width: 84%;
 
     input {
       background: transparent;
@@ -248,6 +310,14 @@ $cursor: #fff;
 $bg: #2d3a4b;
 $dark_gray: #889aa4;
 $light_gray: #eee;
+
+.login-form-phone {
+  position: relative;
+  max-width: 100%;
+  padding: 160px 15px 0;
+  margin: 0 auto;
+  overflow: hidden;
+}
 
 .login-container {
   min-height: 100%;

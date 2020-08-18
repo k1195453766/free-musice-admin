@@ -2,14 +2,18 @@
 <template>
   <div>
     <el-container>
-      <el-aside :width="width">
+      <el-aside :width="width" class="hidden-xs-only">
         <side-bar class="sidebar-container" :isCollapse="isCollapse"></side-bar>
       </el-aside>
 
       <el-container class="el-container">
         <el-header>
-          <nav-bar @updateCollapse="updateCollapse" @handleCommand="handleCommand" />
-          <!-- <i class="el-icon-s-fold" @click="updataCollapse()"></i> -->
+          <nav-bar
+            @updateCollapse="updateCollapse"
+            @handleCommand="handleCommand"
+            @updateCollapsePhone="updateCollapsePhone"
+          />
+          <nav-bar-phone :show3="isCollapsePhone" @closeCollapsePhone="closeCollapsePhone"></nav-bar-phone>
         </el-header>
 
         <el-main>
@@ -25,12 +29,14 @@
 <script>
 import SideBar from "./components/SideBar";
 import NavBar from "./components/NavBar";
+import NavBarPhone from "./components/NavBarPhone";
 export default {
   name: "Layout",
   data() {
     return {
       isCollapse: false,
-      width: "210px"
+      isCollapsePhone: false,
+      width: "210px",
     };
   },
   computes: {
@@ -40,7 +46,8 @@ export default {
   },
   components: {
     SideBar,
-    NavBar
+    NavBar,
+    NavBarPhone,
   },
   methods: {
     updateCollapse(params) {
@@ -56,27 +63,36 @@ export default {
       }
     },
 
+    updateCollapsePhone(params) {
+      console.log(this.isCollapsePhone);
+      this.isCollapsePhone = !this.isCollapsePhone;
+    },
+
+    closeCollapsePhone() {
+      this.isCollapsePhone = false;
+    },
+
     handleCommand(params) {
       if (params.index == 0) {
         // 退出
         this.$store
           .dispatch("loginOut")
-          .then(res => {
+          .then((res) => {
             if (res.status == 1) {
               window.sessionStorage.clear();
               this.$router.replace("/");
               location.reload();
             }
           })
-          .catch(e => {
+          .catch((e) => {
             console.log("loginOut Error");
           });
       } else if (params.index == 1) {
         // 查看个人信息
         this.$router.push("/profile");
       }
-    }
-  }
+    },
+  },
 };
 </script>
 

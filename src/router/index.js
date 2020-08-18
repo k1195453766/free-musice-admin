@@ -106,7 +106,7 @@ export const setMenuTree = function (menuTree) {
 
 const routers = new VueRouter({
   routes,
-  mode: 'history'
+  //mode: 'history'
 })
 
 routers.beforeEach((to, from, next) => {

@@ -6,7 +6,7 @@
 * @LastEditors: Please set LastEditors
 */
 
-const BaseUrl = 'http://www.musicefree.com/'//本地映射，对应127.0.0.1
+const BaseUrl = 'http://www.musicefree.com:8081/'//本地映射，对应127.0.0.1
 //const BaseUrl = 'http://www.sidama.work/'//服务器ip
 
 // 获取token
