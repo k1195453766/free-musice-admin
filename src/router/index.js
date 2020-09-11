@@ -8,6 +8,8 @@ const Layout = () => import('@/views/layout')
 const Welcome = () => import('@/views/welcome')
 const User = () => import('@/views/user')
 const Profile = () => import('@/views/profile')
+const Musice = () => import('@/views/musice')
+const News = () => import('@/views/news')
 const Page404 = () => import('@/views/error-page/404')
 
 Vue.use(VueRouter)
@@ -56,6 +58,18 @@ let routes = [
             meta: { title: '用户列表1', icon: 'user', roles: ['admin', 'user'], affix: true, hidden: false },
           },
         ]
+      },
+      {
+        path: '/musice',
+        component: Musice,
+        name: '音乐管理',
+        meta: { title: '音乐管理', icon: 'musice', roles: ['admin', 'user'], affix: true, hidden: false }
+      },
+      {
+        path: '/news',
+        component: News,
+        name: '文章列表',
+        meta: { title: '文章列表', icon: 'news', roles: ['admin', 'user'], affix: true, hidden: false }
       },
       {
         path: '/config',
@@ -109,6 +123,7 @@ const routers = new VueRouter({
   //mode: 'history'
 })
 
+// 
 routers.beforeEach((to, from, next) => {
   console.log('to', to)
 
@@ -121,6 +136,10 @@ routers.beforeEach((to, from, next) => {
     } else {
       next()
     }
+  }
+
+  if (to.name == null || to.name == undefined) {
+    return next({ name: 'Page404' })
   }
 })
 

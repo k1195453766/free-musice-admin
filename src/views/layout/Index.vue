@@ -125,7 +125,7 @@ body > .el-container {
   color: #333;
   text-align: center;
   line-height: 60px;
-  padding: 0;
+  padding: 0 0;
   width: 100%;
   z-index: 9;
   right: 0px;
