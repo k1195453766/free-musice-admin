@@ -192,7 +192,6 @@ export default {
     },
     handleLogin() {
       loginIn(this.loginForm, (res) => {
-        console.log("loginIn", res);
         if (res.status == 1) {
           checkPermission(res.data.role);
           this.$store.commit("set_UserInfo", res.data);

@@ -120,6 +120,7 @@ export const setMenuTree = function (menuTree) {
 
 const routers = new VueRouter({
   routes,
+  base: 'admin'
   //mode: 'history'
 })
 

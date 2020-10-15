@@ -113,11 +113,26 @@ export function newsTypeList(callback) {
  * @return {} 
  */
 export function addNews(params, callback) {
-    let url = `${api.addNews}?id=${params.id}&title=${params.title}&description=${params.description}&content=${encodeURI(params.content)}&browse_count=${params.browse_count}&type=${params.type}`
-    axios.get(url).then(res => {
+    //let url = `${api.addNews}?id=${params.id}&title=${params.title}&description=${params.description}&content=${encodeURI(params.content)}&content_md=${encodeURI(params.content_md)}&browse_count=${params.browse_count}&type=${params.type}`
+    let url = `${api.addNews}`;
+    let formData = new FormData();
+    formData.append('id', params.id);
+    formData.append('title', params.title);
+    formData.append('description', params.description);
+    formData.append('content', encodeURI(params.content));
+    formData.append('content_md', encodeURI(params.content_md));
+    formData.append('browse_count', params.browse_count);
+    formData.append('type', params.type);
+
+    let config = {
+        headers: {
+            'Content-Type': 'multipart/form-data'
+        }
+    }
+    axios.post(url, formData, config).then(res => {
         callback(res.data)
     }).catch(e => {
-        console.log('error', e);
+        console.log('addNews-error', e);
         callback(errorFun(e.toString()))
     })
 }
@@ -136,4 +151,29 @@ export function deleteNews(ids, callback) {
     }).catch(e => {
         alert('删除文章报错')
     })
+}
+
+/**
+ * @func 上传图片
+ * @desc 
+ * @param {}  
+ * @return {} 
+ */
+export function updataImage(pos, file, callback) {
+    let url = `${api.updataImage}`;
+    var formdata = new FormData();
+    formdata.append("image", file);
+    axios({
+        url: url,
+        method: "post",
+        data: formdata,
+        headers: { "Content-Type": "multipart/form-data" },
+    }).then((res) => {
+        if (res.status == 200 & res.data.code == 1) {
+            callback(res.data.data)
+        }
+    }).catch(e => {
+        //callback(errorFun('上传图片失败'))
+        alert('上传图片失败')
+    });
 }

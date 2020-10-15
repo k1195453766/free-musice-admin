@@ -12,11 +12,12 @@
         <!-- <strong>{{getName}}</strong> -->
         <el-dropdown class="dropdown" @command="handleCommand">
           <span class="el-dropdown-link">
-            {{getName}}
+            {{ getName }}
             <i class="el-icon-arrow-down el-icon--right"></i>
           </span>
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item command="1">个人信息</el-dropdown-item>
+            <el-dropdown-item command="2">直击博客</el-dropdown-item>
             <el-dropdown-item command="0">退出</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>

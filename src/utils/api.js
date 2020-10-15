@@ -6,8 +6,8 @@
 * @LastEditors: Please set LastEditors
 */
 
-const BaseUrl = 'http://admin.musicefree.com/'//本地映射，对应127.0.0.1
-//const BaseUrl = 'http://sidama.sidama.work/'//服务器ip
+//export const BaseUrl = 'http://www.musicefree.com/'//本地映射，对应127.0.0.1
+export const BaseUrl = 'http://interface.sidama.work/'//服务器ip
 
 // 获取token
 export const getToken = BaseUrl + 'getToken'
@@ -27,3 +27,6 @@ export const newsTypeList = BaseUrl + 'api/newsTypeList'
 export const addNews = BaseUrl + 'api/addNews'
 // 删除文章
 export const deleteNews = BaseUrl + 'api/deleteNews'
+
+// 上传图片
+export const updataImage = BaseUrl + 'api/articleUpload'

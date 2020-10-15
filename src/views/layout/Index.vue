@@ -13,7 +13,10 @@
             @handleCommand="handleCommand"
             @updateCollapsePhone="updateCollapsePhone"
           />
-          <nav-bar-phone :show3="isCollapsePhone" @closeCollapsePhone="closeCollapsePhone"></nav-bar-phone>
+          <nav-bar-phone
+            :show3="isCollapsePhone"
+            @closeCollapsePhone="closeCollapsePhone"
+          ></nav-bar-phone>
         </el-header>
 
         <el-main>
@@ -64,7 +67,7 @@ export default {
     },
 
     updateCollapsePhone(params) {
-      console.log(this.isCollapsePhone);
+      // console.log(this.isCollapsePhone);
       this.isCollapsePhone = !this.isCollapsePhone;
     },
 
@@ -90,6 +93,8 @@ export default {
       } else if (params.index == 1) {
         // 查看个人信息
         this.$router.push("/profile");
+      } else if (params.index == 2) {
+        window.open("http://blog.sidama.work");
       }
     },
   },

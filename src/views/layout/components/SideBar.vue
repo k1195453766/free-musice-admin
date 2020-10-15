@@ -94,11 +94,11 @@ export default {
     isCollapse: Boolean,
   },
   created() {
-    console.log("当前路由", this.$route);
-    console.log(
-      "所有路由",
-      JSON.parse(window.sessionStorage.getItem("routes"))
-    );
+    // console.log("当前路由", this.$route);
+    // console.log(
+    //   "所有路由",
+    //   JSON.parse(window.sessionStorage.getItem("routes"))
+    // );
   },
   computed: {
     getRoute() {
@@ -107,10 +107,10 @@ export default {
   },
   methods: {
     handleOpen(key, keyPath) {
-      console.log(key, keyPath);
+      //console.log(key, keyPath);
     },
     handleClose(key, keyPath) {
-      console.log(key, keyPath);
+      //console.log(key, keyPath);
     },
   },
 };

@@ -43,10 +43,12 @@
         </el-form-item>
         <el-form-item label="文章内容" prop="content">
           <mavon-editor
+            :shortCut="false"
             :subfield="false"
             @save="saveDoc"
             @change="updateDoc"
             ref="editor"
+            @imgAdd="imgAdd"
             v-model="ruleForm.content"
           ></mavon-editor>
         </el-form-item>
@@ -60,7 +62,7 @@
 </template>
 
 <script>
-import { newsTypeList } from "@/utils/server";
+import { newsTypeList, updataImage } from "@/utils/server";
 export default {
   name: "addDiaLog",
   props: {
@@ -78,6 +80,7 @@ export default {
         browse_count: "",
         type: "",
         content: "",
+        content_md: "",
       },
       rules: {
         title: [{ required: true, message: "请输入文章名称", trigger: "blur" }],
@@ -109,6 +112,7 @@ export default {
     // 关闭dialog
     dialogClose() {
       this.$emit("dialogClose");
+      this.$refs["ruleForm"].resetFields();
     },
     // 确定dialog
     submitForm() {
@@ -128,6 +132,7 @@ export default {
         this.$refs.ruleForm.validate((valid) => {
           if (valid) {
             this.ruleForm.id = this.param.id;
+            this.ruleForm.content = this.$refs.editor.d_render;
             this.$emit("addNews", this.ruleForm);
           } else {
             return false;
@@ -139,11 +144,27 @@ export default {
       // 此时会自动将 markdown 和 html 传递到这个方法中
       // console.log("markdown内容: " + markdown);
       // console.log("html内容:" + html);
+      this.ruleForm.content_md = markdown;
     },
     saveDoc(markdown, html) {
       // 此时会自动将 markdown 和 html 传递到这个方法中
       // console.log("markdown内容:" + markdown);
       // console.log("html内容:" + html);
+    },
+    // 编辑器添加图片
+    imgAdd(pos, $file) {
+      // 第一步.将图片上传到服务器.
+      updataImage(pos, $file, (res) => {
+        // 第二步.将返回的url替换到文本原位置![...](0) -> ![...](url)
+        this.$refs.editor.$img2Url(
+          pos,
+          "http://81.70.28.64/" + decodeURI(res.imageUrl)
+        );
+      });
+    },
+    // 删除编辑器中的图片
+    imgDel(pos) {
+      delete this.imgFile[pos];
     },
   },
   watch: {
@@ -159,7 +180,7 @@ export default {
         this.ruleForm = {
           title: val.title,
           type: val.type_id,
-          content: val.content,
+          content: val.content_md,
           browse_count: val.browse_count,
           description: val.description,
           like_count: val.like_count,

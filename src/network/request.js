@@ -3,7 +3,8 @@ import axios from 'axios'
 
 export default function request(config) {
     const instance = axios.create({
-        baseURL: 'http://admin.musicefree.com/api',
+        baseURL: 'http://interface.sidama.work/api',//本地服务
+        //baseURL: 'http://81.70.28.64/api',
         timeout: 5000,
         //withCredentials: true,//是否允许发送Cookie 如果为true 则服务器的 Access-control-Allow-Credentials 必须为 true 来源为 XMLHttpRequest的withCredentials配置项
         // proxy: {

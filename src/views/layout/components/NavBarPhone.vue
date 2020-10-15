@@ -60,11 +60,11 @@ export default {
     };
   },
   created() {
-    console.log("当前路由-phone", this.$route);
-    console.log(
-      "所有路由",
-      JSON.parse(window.sessionStorage.getItem("routes"))
-    );
+    // console.log("当前路由-phone", this.$route);
+    // console.log(
+    //   "所有路由",
+    //   JSON.parse(window.sessionStorage.getItem("routes"))
+    // );
   },
   computed: {
     getRoute() {
@@ -73,10 +73,10 @@ export default {
   },
   methods: {
     handleOpen(key, keyPath) {
-      console.log(key, keyPath);
+      //console.log(key, keyPath);
     },
     handleClose(key, keyPath) {
-      console.log(key, keyPath);
+      //console.log(key, keyPath);
     },
     // 点击路由跳转，并收起菜单
     onPressItem(path) {
