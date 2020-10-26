@@ -34,7 +34,7 @@
         <el-form-item label="文章类型" prop="type">
           <el-select v-model="ruleForm.type" placeholder="请选择文章类型">
             <el-option
-              v-for="(type,index) in types"
+              v-for="(type, index) in types"
               :key="index"
               :label="type.cate_name"
               :value="type.class_id"
@@ -63,6 +63,7 @@
 
 <script>
 import { newsTypeList, updataImage } from "@/utils/server";
+import { BaseUrl } from "@/utils/api";
 export default {
   name: "addDiaLog",
   props: {
@@ -156,10 +157,8 @@ export default {
       // 第一步.将图片上传到服务器.
       updataImage(pos, $file, (res) => {
         // 第二步.将返回的url替换到文本原位置![...](0) -> ![...](url)
-        this.$refs.editor.$img2Url(
-          pos,
-          "http://81.70.28.64/" + decodeURI(res.imageUrl)
-        );
+        let newRes = decodeURI(res.imageUrl).replace(/\\/g, "/");
+        this.$refs.editor.$img2Url(pos, BaseUrl + newRes);
       });
     },
     // 删除编辑器中的图片

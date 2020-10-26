@@ -55,7 +55,7 @@ let routes = [
             path: '/user',
             component: User,
             name: 'User',
-            meta: { title: '用户列表1', icon: 'user', roles: ['admin', 'user'], affix: true, hidden: false },
+            meta: { title: '用户列表', icon: 'user', roles: ['admin'], affix: true, hidden: false },
           },
         ]
       },
@@ -69,7 +69,7 @@ let routes = [
         path: '/news',
         component: News,
         name: '文章列表',
-        meta: { title: '文章列表', icon: 'news', roles: ['admin', 'user'], affix: true, hidden: false }
+        meta: { title: '文章列表', icon: 'news', roles: ['admin'], affix: true, hidden: false }
       },
       {
         path: '/config',
@@ -126,7 +126,6 @@ const routers = new VueRouter({
 
 // 
 routers.beforeEach((to, from, next) => {
-  console.log('to', to)
 
   if (to.path == undefined) return next({ name: 'Login' })
   if (to.path == '/' || to.path == '/login') return next();
