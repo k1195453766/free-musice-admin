@@ -12,9 +12,14 @@ import mavonEditor from 'mavon-editor'
 import 'mavon-editor/dist/css/index.css'
 Vue.use(mavonEditor)
 
+import echarts from 'echarts'
+
+Vue.use(echarts)
+
 Vue.config.productionTip = false
 
 Vue.prototype.$http = request
+Vue.prototype.$echarts = echarts
 
 /* eslint-disable no-new */
 new Vue({

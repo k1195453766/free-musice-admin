@@ -126,9 +126,9 @@ const routers = new VueRouter({
 
 // 
 routers.beforeEach((to, from, next) => {
-
   if (to.path == undefined) return next({ name: 'Login' })
-  if (to.path == '/' || to.path == '/login') return next();
+  if (to.path == '/') return next();
+  if (to.path == '/login') return next({ name: 'Login' });
   else {
     const token = window.sessionStorage.getItem("token")
     if (token == null || token == undefined) {
